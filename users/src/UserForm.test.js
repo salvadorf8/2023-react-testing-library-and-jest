@@ -65,3 +65,24 @@ test('it calls onUserAdd when the form is submitted', () => {
     expect(mock).toHaveBeenCalled(); //this will work because it keeps a count on how many times called
     expect(mock).toHaveBeenCalledWith({ name: 'jane', email: 'jane@gmail.com' });
 });
+
+test('should clear out textboxes after submitted', () => {
+    // for this test, we dont care about the onUserAdd
+    render(<UserForm onUserAdd={() => {}} />);
+
+    const nameInput = screen.getByRole('textbox', { name: /name/i });
+    const emailInput = screen.getByRole('textbox', { name: /email/i });
+    const button = screen.getByRole('button');
+
+    user.click(nameInput);
+    user.keyboard('jane');
+    user.click(emailInput);
+    user.keyboard('jane@gmail.com');
+
+    user.click(button);
+
+    // REMEMBER: toHaveValue is a matcher
+    // expect is an expectation also referred to as an assertion
+    expect(nameInput).toHaveValue('');
+    expect(emailInput).toHaveValue('');
+});

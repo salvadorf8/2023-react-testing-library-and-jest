@@ -1,14 +1,21 @@
 import { render, screen, within } from '@testing-library/react';
 import UserList from './components/userList';
 
-test('render one row per user - preferred way', () => {
+const renderComponent = () => {
     // Render the component
     const users = [
         { name: 'jane', email: 'jane@gmail.com' },
         { name: 'sam', email: 'sam@gmail.com' }
     ];
 
-    render(<UserList users={users} />);
+    const { container } = render(<UserList users={users} />);
+
+    // returning these two only because they are needed in two different tests
+    return { users, container };
+};
+
+test('render one row per user - preferred way', () => {
+    renderComponent();
 
     // NICE playground that finds all the rows in a table
     // screen.logTestingPlaygroundURL();
@@ -22,13 +29,7 @@ test('render one row per user - preferred way', () => {
 // BIG NOTE: Stephen Grider did not like this because - code would need to be modified only
 // HOWEVER: it is most preferred
 test('render one row per user - Fallback #1 - using data-testid', () => {
-    // Render the component
-    const users = [
-        { name: 'jane', email: 'jane@gmail.com' },
-        { name: 'sam', email: 'sam@gmail.com' }
-    ];
-
-    render(<UserList users={users} />);
+    renderComponent();
 
     // NICE playground that finds all the rows in a table
     // screen.logTestingPlaygroundURL();
@@ -44,13 +45,7 @@ test('render one row per user - Fallback #1 - using data-testid', () => {
 
 // BIG NOTE: stephen grider likes this version instead
 test('render one row per user - Fallback #2 - using container.querySelector()', () => {
-    // Render the component
-    const users = [
-        { name: 'jane', email: 'jane@gmail.com' },
-        { name: 'sam', email: 'sam@gmail.com' }
-    ];
-
-    const { container } = render(<UserList users={users} />);
+    const { container } = renderComponent();
 
     // Find all the tr elements that are inside of the tbody -
     // use next comment line to disable the red line error
@@ -62,13 +57,7 @@ test('render one row per user - Fallback #2 - using container.querySelector()', 
 });
 
 test('render the email and name of each user', () => {
-    // Render the component
-    const users = [
-        { name: 'jane', email: 'jane@gmail.com' },
-        { name: 'sam', email: 'sam@gmail.com' }
-    ];
-
-    render(<UserList users={users} />);
+    const { users } = renderComponent();
 
     // to get a little help, use the NICE playground
 
