@@ -33,7 +33,7 @@ test('render one row per user - Fallback #1 - using data-testid', () => {
 
     // NICE playground that finds all the rows in a table
     // screen.logTestingPlaygroundURL();
-    const rows = within(screen.getByTestId('users')).getAllByRole('row');
+    const rows = within(screen.getByTestId('testid_userlist')).getAllByRole('row');
 
     // modify userList.js to have an extra attribute
     // ex: <tbody data-testid='users'>
