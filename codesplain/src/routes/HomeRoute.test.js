@@ -4,34 +4,55 @@ import { rest } from 'msw';
 import { MemoryRouter } from 'react-router-dom';
 
 import HomeRoute from './HomeRoute';
+import { createServer } from '../test/server';
 
-// 1) msw handler to intercept axios call
-const handlers = [
-    rest.get('/api/repositories', (req, res, ctx) => {
-        const language = req.url.searchParams.get('q').split('language:')[1];
-
-        return res(
-            ctx.json({
+// 5) refactor to reuse the handler below
+// goal to do this - I want to be able to define a res function, this function will be called whenever an incoming GET
+// request /api/repositories is received by the fake MSW node server
+createServer([
+    {
+        path: '/api/repositories',
+        method: 'get',
+        res: (req, res, ctx) => {
+            const language = req.url.searchParams.get('q').split('language:')[1];
+            return {
                 items: [
                     { id: 1, full_name: `${language}_one` },
                     { id: 2, full_name: `${language}_two` }
                 ]
-            })
-        );
-    })
-];
-// 2) code to start up the servers to start intercepting
-const server = setupServer(...handlers);
+            };
+        }
+    }
+]);
 
-beforeAll(() => {
-    server.listen();
-});
-afterEach(() => {
-    server.resetHandlers();
-});
-afterAll(() => {
-    server.close();
-});
+// 1) msw handler to intercept axios call
+// const handlers = [
+//     rest.get('/api/repositories', (req, res, ctx) => {
+//         const language = req.url.searchParams.get('q').split('language:')[1];
+
+//         return res(
+//             ctx.json({
+//                 items: [
+//                     { id: 1, full_name: `${language}_one` },
+//                     { id: 2, full_name: `${language}_two` }
+//                 ]
+//             })
+//         );
+//     })
+// ];
+
+// 2) code to start up the servers to start intercepting
+// const server = setupServer(...handlers);
+
+// beforeAll(() => {
+//     server.listen();
+// });
+// afterEach(() => {
+//     server.resetHandlers();
+// });
+// afterAll(() => {
+//     server.close();
+// });
 
 test('renders two links for each language', async () => {
     // 3) wrap HomeRoute with MemoryRouter because there is a Link somewhere
