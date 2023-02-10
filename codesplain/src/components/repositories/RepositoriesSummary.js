@@ -10,6 +10,7 @@ function RepositoriesSummary({ repository }) {
             </div>
             <div>{open_issues} issues need help</div>
             <div>{forks} Forks</div>
+            <div>{language}</div>
         </div>
     );
 }
