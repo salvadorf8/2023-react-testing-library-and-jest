@@ -31,15 +31,15 @@ function SignUpForm() {
     return (
         <form onSubmit={handleSubmit} className='grid grid-cols-6 gap-6'>
             <div className='col-span-6'>
-                <Input label='Email' value={email} onChange={(e) => setEmail(e.target.value)} type='email' name='email' error={error} />
+                <Input aria-label='Email' label='Email' value={email} onChange={(e) => setEmail(e.target.value)} type='email' name='email' error={error} />
             </div>
 
             <div className='col-span-6 sm:col-span-3'>
-                <Input label='Password' value={password} onChange={(e) => setPassword(e.target.value)} type='password' name='password' error={error} />
+                <Input data-testid='Password' label='Password' value={password} onChange={(e) => setPassword(e.target.value)} type='password' name='password' error={error} />
             </div>
 
             <div className='col-span-6 sm:col-span-3'>
-                <Input label='Password Confirmation' value={passwordConfirmation} onChange={(e) => setPasswordConfirmation(e.target.value)} type='password' name='passwordConfirmation' error={error} />
+                <Input data-testid='confirm-Password' label='Password Confirmation' value={passwordConfirmation} onChange={(e) => setPasswordConfirmation(e.target.value)} type='password' name='passwordConfirmation' error={error} />
             </div>
 
             <div className='col-span-6'>
